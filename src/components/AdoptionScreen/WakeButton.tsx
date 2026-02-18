@@ -39,7 +39,7 @@ export default function WakeButton({ disabled, disabledReason, onClick }: WakeBu
       >
         <span className="flex items-center gap-2">
           <Sprout size={20} />
-          Despertar mi Huasi
+          Despertar mi wasi
         </span>
       </button>
 
