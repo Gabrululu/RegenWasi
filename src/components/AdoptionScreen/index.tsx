@@ -111,8 +111,8 @@ export default function AdoptionScreen({ onAdopt }: AdoptionScreenProps) {
         </div>
 
         <p className="font-body text-xs text-niebla/30 text-center max-w-xs">
-          Cada guardián es un ser vivo del ecosistema andino-amazónico.
-          Cuídalo con amor y tu Huasi prosperará.
+          Estos guardianes son seres vivos que nos acompañan.
+          Si los tratas con amor, tu espacio prosperará.
         </p>
       </div>
     </div>
