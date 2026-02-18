@@ -1,1 +1,1 @@
-RegenHuasi
+RegenWasi
