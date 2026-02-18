@@ -128,7 +128,7 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
         <ActionButtons pet={pet} onAction={handleAction} />
 
         <p className="text-center font-body text-xs text-niebla/20 mt-2">
-          RegenHuasi · Ecosistema andino-amazónico digital
+          RegenWasi · Ecosistema natural digital
         </p>
       </div>
 
