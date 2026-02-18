@@ -38,7 +38,7 @@ export default function AdoptionScreen({ onAdopt }: AdoptionScreenProps) {
   function getDisabledReason() {
     if (!isNameValid && !animal) return 'Escribe un nombre y elige tu Guardián';
     if (!isNameValid) return 'Escribe un nombre válido primero';
-    if (!animal) return 'Elige tu Guardián Andino';
+    if (!animal) return 'Elige tu Guardián Ideal';
     return '';
   }
 
@@ -78,13 +78,13 @@ export default function AdoptionScreen({ onAdopt }: AdoptionScreenProps) {
               lineHeight: 1.1,
             }}
           >
-            RegenHuasi
+            RegenWasi
           </h1>
           <p
             className="font-display italic text-hoja"
             style={{ fontSize: 'clamp(1rem, 2.5vw, 1.25rem)' }}
           >
-            Elige al guardián de tu Huasi
+            Elige al guardián de tu Wasi
           </p>
           <div className="nazca-divider mx-auto mt-4" style={{ width: '120px' }} />
         </div>
