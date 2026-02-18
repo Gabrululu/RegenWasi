@@ -31,7 +31,7 @@ export default function Header({ pet, onReset }: HeaderProps) {
             </h1>
           </div>
           <p className="font-body text-xs text-hoja/70 mt-0.5">
-            Nivel {level} · Guardián del Huasi
+            Nivel {level} · Guardián del Wasi
           </p>
         </div>
       </div>
