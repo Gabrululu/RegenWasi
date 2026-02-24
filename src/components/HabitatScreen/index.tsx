@@ -44,6 +44,15 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
     setMemories(loadMemories());
   }, []);
 
+  useEffect(() => {
+    if (isProcessing) {
+      document.body.classList.add('processing');
+    } else {
+      document.body.classList.remove('processing');
+    }
+    return () => document.body.classList.remove('processing');
+  }, [isProcessing]);
+
   const debouncedSave = useCallback((updatedPet: PetData) => {
     if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     saveTimerRef.current = setTimeout(() => savePet(updatedPet), SAVE_DEBOUNCE_MS);
