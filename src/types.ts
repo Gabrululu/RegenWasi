@@ -26,3 +26,20 @@ export interface AnimalConfig {
 }
 
 export type AvatarState = 'breathe' | 'bounce' | 'shake' | 'pop';
+
+export interface ChatMessage {
+  id: number;
+  role: 'user' | 'guardian';
+  text: string;
+  timestamp: string;
+}
+
+export interface Memories {
+  facts: string[];
+  lastUpdated: string;
+}
+
+export interface FloatingTextItem {
+  id: number;
+  text: string;
+}
