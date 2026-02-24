@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import ChatMessages from './ChatMessages';
 import ChatInput from './ChatInput';
 import { ChatMessage, Memories, FloatingTextItem, PetData } from '../../types';
-import { loadMessages, saveMessages, loadMemories, saveMemories } from '../../utils/chat';
+import { loadMessages, saveMessages, saveMemories } from '../../utils/chat';
 import { callOpenAI, buildSystemPrompt, extractMemory } from '../../utils/api';
 
 interface ChatSectionProps {
@@ -10,9 +10,12 @@ interface ChatSectionProps {
   memories: Memories;
   onPetUpdate: (updater: (prev: PetData) => PetData) => void;
   onMemoriesUpdate: (m: Memories) => void;
+  onEarnCoins?: (amount: number) => void;
+  currentFrutas?: number;
+  totalFrutasEarned?: number;
 }
 
-export default function ChatSection({ pet, memories, onPetUpdate, onMemoriesUpdate }: ChatSectionProps) {
+export default function ChatSection({ pet, memories, onPetUpdate, onMemoriesUpdate, onEarnCoins, currentFrutas, totalFrutasEarned }: ChatSectionProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [floatingTexts, setFloatingTexts] = useState<FloatingTextItem[]>([]);
@@ -50,6 +53,15 @@ export default function ChatSection({ pet, memories, onPetUpdate, onMemoriesUpda
     [onPetUpdate]
   );
 
+  const calculateCoinReward = (currentFrutas: number, totalEarned: number) => {
+    if (totalEarned >= 200) return 0;
+    if (currentFrutas >= 90) return Math.random() < 0.1 ? Math.floor(Math.random() * 2) + 1 : 0;
+    if (currentFrutas >= 70) return Math.random() < 0.25 ? Math.floor(Math.random() * 3) + 1 : 0;
+    if (currentFrutas >= 40) return Math.random() < 0.5 ? Math.floor(Math.random() * 3) + 2 : 0;
+    if (currentFrutas > 0) return Math.random() < 0.7 ? Math.floor(Math.random() * 4) + 2 : 0;
+    return Math.random() < 0.8 ? Math.floor(Math.random() * 3) + 3 : 0;
+  };
+
   const sendMessage = useCallback(
     async (text: string) => {
       if (!text.trim() || isTyping) return;
@@ -86,6 +98,14 @@ export default function ChatSection({ pet, memories, onPetUpdate, onMemoriesUpda
         const final = [...withUser, guardianMsg].slice(-20);
         setMessages(final);
         saveMessages(final);
+
+        // Recompensa por chat
+        try {
+          if (onEarnCoins) {
+            const reward = calculateCoinReward(pet.frutas ?? (currentFrutas ?? 0), (pet.totalFrutasEarned ?? (totalFrutasEarned ?? 0)));
+            if (reward > 0) onEarnCoins(reward);
+          }
+        } catch {}
 
         extractMemory(text, memories.facts)
           .then((newFacts) => {

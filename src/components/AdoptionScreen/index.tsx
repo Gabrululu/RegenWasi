@@ -59,6 +59,12 @@ export default function AdoptionScreen({ onAdopt }: AdoptionScreenProps) {
       createdAt: new Date().toISOString(),
       lastSaved: new Date().toISOString(),
       totalInteractions: 0,
+      // economía
+      frutas: 100,
+      totalFrutasEarned: 100,
+      totalFrutasSpent: 0,
+      lastCoinEarnedAt: null,
+      activityLog: [],
     };
     savePet(pet);
     onAdopt(pet);

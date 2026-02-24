@@ -1,7 +1,7 @@
 import { PetData, Memories, ChatMessage } from '../types';
 import { getAnimal } from './animalConfig';
 
-const OPENAI_API_KEY = import.meta.env.VITE_OPENAI_API_KEY ?? '';
+const OPENAI_API_KEY = (import.meta as any).env?.VITE_OPENAI_API_KEY ?? '';
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
 const MODEL = 'gpt-3.5-turbo';
 

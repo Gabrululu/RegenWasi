@@ -23,22 +23,29 @@ interface ActionButtonsProps {
     stat: keyof Pick<PetData, 'vitalidad' | 'energia' | 'nutricion'>,
     particleType: ParticleType
   ) => void;
+  frutas?: number;
+  onFeed?: () => void;
+  isProcessing?: boolean;
 }
 
-export default function ActionButtons({ pet, onAction }: ActionButtonsProps) {
+export default function ActionButtons({ pet, onAction, frutas = 0, onFeed, isProcessing = false }: ActionButtonsProps) {
   return (
     <div className="flex flex-col sm:flex-row gap-3 justify-center">
       {ACTIONS.map(({ id, label, icon: Icon, stat, color, particleType }) => {
         const statValue = pet[stat];
         const isFull = statValue >= 100;
         const isEmpty = statValue === 0;
-        const disabled = isFull || isEmpty;
+        const disabled = isFull || isEmpty || (id === 'nutrir' && frutas < 10);
 
         return (
           <button
             key={id}
-            onClick={() => !disabled && onAction(stat, particleType)}
-            disabled={disabled}
+            onClick={() => {
+              if (disabled) return;
+              if (id === 'nutrir' && onFeed) return onFeed();
+              return onAction(stat, particleType);
+            }}
+            disabled={disabled || isProcessing}
             className="flex-1 flex flex-col items-center gap-2 p-4 rounded-2xl transition-all duration-150 relative"
             style={{
               background: 'rgba(245,239,230,0.08)',
@@ -91,6 +98,9 @@ export default function ActionButtons({ pet, onAction }: ActionButtonsProps) {
               >
                 MAX
               </span>
+            )}
+            {id === 'nutrir' && (
+              <span className="text-xs text-sol font-bold mt-2">10 🍊</span>
             )}
           </button>
         );

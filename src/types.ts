@@ -9,6 +9,13 @@ export interface PetData {
   createdAt: string;
   lastSaved: string;
   totalInteractions: number;
+  // Economía (sesión 3)
+  frutas?: number;
+  totalFrutasEarned?: number;
+  totalFrutasSpent?: number;
+  lastCoinEarnedAt?: string | null;
+  // Historial (bonus)
+  activityLog?: ActivityEntry[];
 }
 
 export interface AnimalConfig {
@@ -42,4 +49,12 @@ export interface Memories {
 export interface FloatingTextItem {
   id: number;
   text: string;
+}
+
+export interface ActivityEntry {
+  id: number;
+  type: 'feed' | 'chat_earn' | 'other';
+  coins: number;
+  label: string;
+  timestamp: string;
 }

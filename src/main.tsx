@@ -2,9 +2,24 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
+import { PrivyProvider } from '@privy-io/react-auth';
+
+const PRIVY_APP_ID = "cmkyyrsbj04bck40bidlscndo";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <PrivyProvider
+      appId={PRIVY_APP_ID}
+      config={{
+        loginMethods: ['email', 'google'],
+        appearance: {
+          theme: 'dark',
+          accentColor: '#F2B705',
+          logo: '🌿',
+        },
+      }}
+    >
+      <App />
+    </PrivyProvider>
   </StrictMode>
 );

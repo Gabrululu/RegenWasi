@@ -1,9 +1,35 @@
 import { PetData } from '../types';
 
-const KEY = 'regenhuasi_pet';
+let CURRENT_USER_ID: string | null = null;
 
-export function loadPet(): PetData | null {
+function keyFor(userId?: string | null) {
+  if (userId === '__guest__') return 'regenhuasi_guest_data';
+  if (userId) return `regenhuasi_${userId}_data`;
+  return 'regenhuasi_guest_data';
+}
+
+export function setCurrentUserId(id: string | null) {
+  CURRENT_USER_ID = id;
+}
+
+export function migrateGuestToUser(userId: string) {
   try {
+    const guestKey = 'regenhuasi_guest_data';
+    const guest = localStorage.getItem(guestKey);
+    if (!guest) return;
+    const destKey = `regenhuasi_${userId}_data`;
+    if (!localStorage.getItem(destKey)) {
+      localStorage.setItem(destKey, guest);
+    }
+    localStorage.removeItem(guestKey);
+  } catch (e) {
+    console.error('Migration error', e);
+  }
+}
+
+export function loadPet(userId?: string | null): PetData | null {
+  try {
+    const KEY = keyFor(userId ?? CURRENT_USER_ID);
     const raw = localStorage.getItem(KEY);
     return raw ? (JSON.parse(raw) as PetData) : null;
   } catch {
@@ -11,11 +37,17 @@ export function loadPet(): PetData | null {
   }
 }
 
-export function savePet(pet: PetData): void {
-  localStorage.setItem(KEY, JSON.stringify({ ...pet, lastSaved: new Date().toISOString() }));
+export function savePet(pet: PetData, userId?: string | null): void {
+  try {
+    const KEY = keyFor(userId ?? CURRENT_USER_ID);
+    localStorage.setItem(KEY, JSON.stringify({ ...pet, lastSaved: new Date().toISOString() }));
+  } catch (e) {
+    console.error('savePet error', e);
+  }
 }
 
-export function clearPet(): void {
+export function clearPet(userId?: string | null): void {
+  const KEY = keyFor(userId ?? CURRENT_USER_ID);
   localStorage.removeItem(KEY);
 }
 
