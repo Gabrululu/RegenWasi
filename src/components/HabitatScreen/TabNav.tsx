@@ -14,6 +14,7 @@ const DEFAULT_TABS: Tab[] = [
   { id: 'wasi', label: '🏠 Wasi' },
   { id: 'chat', label: '💬 Chat' },
   { id: 'training', label: '🎓 Entrenar' },
+  { id: 'social', label: '🌐 Social' },
 ];
 
 export default function TabNav({ tabs, active, onChange }: TabNavProps) {

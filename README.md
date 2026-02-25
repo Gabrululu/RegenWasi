@@ -38,6 +38,19 @@ Un ecosistema digital interactivo donde adoptas un guardián de la naturaleza (a
 - 🎨 **Animaciones:** partículas, pop, spin y efectos orbit en la evolución para mantener la estética del Wasi.
 - 🔑 **Persistencia y migración:** los datos de entrenamiento persisten en `localStorage` usando el prefijo `regenwasi_*` y migran desde el guest cuando el usuario inicia sesión.
 
+### Sesión 5 — Conexión al HUB + Sistema Social Completo (FINAL)
+- 🌐 **HUB Central Público:** conexión a `https://regenmon-final.vercel.app` — todos los Guardianes viven en un mundo social compartido.
+- 📱 **Registro automático:** formulario intelligente que detecta datos del pet y crea perfil público automáticamente con sprite emoji.
+- 🏆 **Leaderboard Global:** ranking mundial filtrable por etapa (Bebé/Joven/Adulto), con paginación y posición personal.
+- 👤 **Perfil Público:** cada Guardián tiene URL `https://app.com/regenmon/[id]` visible para visitantes, mostrando stats, etapa, fecha de registro.
+- 🍎 **Interacciones Sociales:** alimentar (-10 🍊), enviar regalos (5/10/25 🍊), dejar mensajes privados (140 caracteres máx).
+- 💬 **Feed de Mensajes:** sección de chat con timestampps relativo ("hace 5 min"), sin logueo necesario para leer.
+- 🎁 **Celebraciones:** confetti emoji volador al recibir regalo/alimentación, animaciones smooth.
+- 📊 **Actividad Reciente:** notificaciones en dashboard de interacciones recibidas (feed, gift, message) con timestamps.
+- 🔄 **Sincronización Automática:** cada 5 minutos se synca pet data (stats, puntos, training history) al HUB silenciosamente.
+- 🔑 **Persistencia Multi-Usuario:** localStorage con `regenwasi_hub_id` e `regenwasi_hub_registered`, migración automática `regenhuasi_*` → `regenwasi_*` al cargar.
+- 🌍 **Responsive Full:** mobile-first layout (<640px, 640–1024px, desktop), tabs en navegación central (Wasi, Chat, Entrenar, Social).
+
 ---
 
 ## 🚀 Quick Start
@@ -111,28 +124,47 @@ src/
 │   │   ├── AnimalSelector.tsx
 │   │   ├── NameInput.tsx
 │   │   └── ParticleBackground.tsx
-│   └── HabitatScreen/
-│       ├── index.tsx (main gameplay + economy)
-│       ├── Header.tsx (user info + frutas)
-│       ├── Terrarium.tsx
-│       ├── StatsPanel.tsx
-│       ├── ActionButtons.tsx
-│       ├── ChatSection.tsx
-│       ├── ChatMessages.tsx
-│       ├── ChatInput.tsx
-│       ├── InteractionParticles.tsx
-│       └── ResetModal.tsx
+│   ├── HabitatScreen/
+│   │   ├── index.tsx (main gameplay + 4 tabs: Wasi, Chat, Entrenar, Social)
+│   │   ├── Header.tsx (user info + frutas)
+│   │   ├── Terrarium.tsx
+│   │   ├── StatsPanel.tsx
+│   │   ├── ActionButtons.tsx
+│   │   ├── ChatSection.tsx
+│   │   ├── ChatMessages.tsx
+│   │   ├── ChatInput.tsx
+│   │   ├── InteractionParticles.tsx
+│   │   ├── ResetModal.tsx
+│   │   ├── TabNav.tsx (navegación 4 tabs + Social)
+│   │   ├── SocialHub.tsx (registro + dashboard social)
+│   │   └── TrainingScreen/ (Sesión 4)
+│   │       ├── index.tsx
+│   │       ├── CategorySelector.tsx
+│   │       ├── ImageUploader.tsx
+│   │       └── ...otros componentes
+│   └── pages/ (nuevas rutas Sesión 5)
+│       ├── LeaderboardPage.tsx (​/leaderboard)
+│       └── PublicProfilePage.tsx (/regenmon/[id])
 ├── hooks/
 │   ├── usePrivyAuth.tsx (auth wrapper)
-│   └── usePersistence.ts (storage layer)
+│   ├── usePersistence.ts (storage layer)
+│   ├── useHub.ts (NUEVO: consumo APIs HUB)
+│   ├── useHubAuth.ts (NUEVO: persistencia HUB)
+│   └── useHubSync.ts (NUEVO: sincronización periódica)
 ├── utils/
-│   ├── storage.ts (localStorage per-user)
+│   ├── storage.ts (localStorage per-user, registriert)
 │   ├── chat.ts (persistence de mensajes)
 │   ├── api.ts (OpenAI integration)
-│   └── animalConfig.ts (pet data)
-├── App.tsx (main auth + nav flow)
-├── main.tsx (PrivyProvider wrapper)
-└── index.css (glassmorphism + animations)
+│   ├── animalConfig.ts (pet data)
+│   ├── training.ts (Sesión 4)
+│   └── trainingConfig.ts (Sesión 4)
+├── pages/
+│   ├── LeaderboardPage.tsx
+│   └── PublicProfilePage.tsx
+├── types.ts (tipos unificados)
+├── App.tsx (Router + auth + migración de claves)
+├── main.tsx (PrivyProvider + Router setup)
+└── index.css (glassmorphism + animations + confetti)
 ```
 
 ---

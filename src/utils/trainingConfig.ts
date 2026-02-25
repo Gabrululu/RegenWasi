@@ -1,3 +1,10 @@
+export const ANIMAL_EMOJIS = {
+  alpaca: '🦙',
+  condor: '🦅',
+  rana: '🐸',
+  colibri: '🐦',
+};
+
 export const TRAINING_CATEGORIES = [
   {
     id: 'codigo',

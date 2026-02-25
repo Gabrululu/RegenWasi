@@ -13,6 +13,7 @@ import { savePet, clearPet } from '../../utils/storage';
 import { loadMemories, saveMemories, clearChat } from '../../utils/chat';
 import TabNav from './TabNav';
 import TrainingScreen from '../TrainingScreen';
+import { SocialHub } from './SocialHub';
 
 const DEGRADE_INTERVAL_MS = 15000;
 const SAVE_DEBOUNCE_MS = 500;
@@ -37,7 +38,7 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
   const [toast, setToast] = useState<{ message: string; type: 'info' | 'success' | 'error'; visible: boolean }>({ message: '', type: 'info', visible: false });
   const [historyOpen, setHistoryOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'wasi' | 'chat' | 'training'>('wasi');
+  const [activeTab, setActiveTab] = useState<'wasi' | 'chat' | 'training' | 'social'>('wasi');
 
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const degradeTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -264,7 +265,7 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
 
         <div className="nazca-divider mx-4" />
 
-        <TabNav active={activeTab} onChange={(id) => setActiveTab(id as 'wasi'|'chat'|'training')} />
+        <TabNav active={activeTab} onChange={(id) => setActiveTab(id as 'wasi'|'chat'|'training'|'social')} />
 
         {activeTab === 'wasi' && (
           <>
@@ -305,6 +306,19 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
               // use centralized addActivityLog and persist
               addActivityLog(entry as any);
               debouncedSave({ ...pet, activityLog: [ { id: Date.now(), ...entry, timestamp: new Date().toISOString() }, ...activityLog ].slice(0,10) } as PetData);
+            }}
+          />
+        )}
+
+        {activeTab === 'social' && (
+          <SocialHub
+            pet={pet}
+            stats={{ vitalidad: pet.vitalidad, energia: pet.energia, nutricion: pet.nutricion }}
+            totalPoints={pet.totalPoints ?? 0}
+            frutas={frutas}
+            showToast={(m, t) => setToast({ message: m, type: t, visible: true })}
+            onNavigate={(_path) => {
+              /* manejado por la app principal */
             }}
           />
         )}

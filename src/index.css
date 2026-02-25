@@ -233,3 +233,22 @@ body::before {
 
 body.processing { cursor: wait !important; }
 body.processing * { cursor: wait !important; }
+
+/* Confetti fly animation para celebraciones sociales */
+@keyframes confettiFly {
+  0% {
+    opacity: 1;
+    transform: translateY(0) translateX(0) scale(1) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-120px) translateX(var(--tx, 0)) scale(0.5) rotate(360deg);
+  }
+}
+
+/* Celebration root para emojis voladores */
+#celebration-root {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+}
