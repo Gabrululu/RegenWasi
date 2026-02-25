@@ -5,6 +5,7 @@
 
 import React, { useState } from 'react';
 import { Copy } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useHubAuth } from '../../hooks/useHubAuth';
 import { useHub } from '../../hooks/useHub';
 import type { PetData } from '../../types';
@@ -27,6 +28,7 @@ export const SocialHub: React.FC<SocialHubProps> = ({
   showToast,
   onNavigate,
 }) => {
+  const navigate = useNavigate();
   const { hubId, isRegistered, saveHubRegistration } = useHubAuth();
   const { register } = useHub();
   const [view, setView] = useState(isRegistered && hubId ? 'dashboard' : 'register');
@@ -76,6 +78,7 @@ export const SocialHub: React.FC<SocialHubProps> = ({
 
   const handleNavigate = (path: string) => {
     if (onNavigate) onNavigate(path);
+    navigate(path);
   };
 
   return (

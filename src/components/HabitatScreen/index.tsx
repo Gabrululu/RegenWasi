@@ -49,6 +49,11 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
   }, []);
 
   useEffect(() => {
+    if (pet.frutas !== undefined) setFrutas(pet.frutas);
+    if (pet.totalFrutasEarned !== undefined) setTotalFrutasEarned(pet.totalFrutasEarned);
+  }, [pet.frutas, pet.totalFrutasEarned]);
+
+  useEffect(() => {
     if (isProcessing) {
       document.body.classList.add('processing');
     } else {
@@ -281,6 +286,35 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
             <StatsPanel pet={pet} />
 
             <ActionButtons pet={pet} onAction={handleAction} frutas={frutas} onFeed={handleFeed} isProcessing={isProcessing} />
+
+            <div className="activity-section mt-2">
+              <button
+                onClick={() => setHistoryOpen(prev => !prev)}
+                className="w-full flex items-center justify-between px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all dm-sans text-sm text-niebla/70"
+              >
+                <span>📜 Historial de Actividad</span>
+                <span className={`transition-transform duration-200 inline-block ${historyOpen ? 'rotate-180' : ''}`}>▾</span>
+              </button>
+
+              <div className={`overflow-hidden transition-all duration-300 ${historyOpen ? 'max-h-80 mt-2' : 'max-h-0'}`}>
+                <div className="space-y-1.5 overflow-y-auto max-h-72 pr-1">
+                  {activityLog.length === 0 ? (
+                    <p className="text-center text-niebla/40 dm-sans text-xs py-4">Sin actividad aún...</p>
+                  ) : activityLog.map(entry => (
+                    <div key={entry.id} className="flex items-center justify-between px-3 py-2 rounded-xl bg-white/5 border border-white/10">
+                      <div className="flex items-center gap-2">
+                        <span>{entry.type === 'feed' ? '🍎' : entry.type === 'chat_earn' ? '💬' : '🌿'}</span>
+                        <span className="dm-sans text-xs text-niebla/80 truncate max-w-[140px]">{entry.label}</span>
+                      </div>
+                      <div className="flex items-center gap-3 flex-shrink-0">
+                        <span className={`dm-sans text-xs font-bold ${entry.coins > 0 ? 'text-hoja' : 'text-accent'}`}>{entry.coins > 0 ? '+' : ''}{entry.coins} 🍊</span>
+                        <span className="dm-sans text-xs text-niebla/40">{new Date(entry.timestamp).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </>
         )}
 
@@ -299,13 +333,11 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
         {activeTab === 'training' && (
           <TrainingScreen
             pet={pet}
-            onPetUpdate={(u) => { handlePetUpdate(u); setPet(u); }}
-            onShowToast={(m, t) => setToast({ message: m, type: t, visible: true })}
+            onPetUpdate={handlePetUpdate}
+            onShowToast={(m, t) => showToast(m, t)}
             onTriggerFloatingCoin={(amount, emoji) => triggerFloatingCoin(amount, emoji)}
             onAddActivityLog={(entry) => {
-              // use centralized addActivityLog and persist
               addActivityLog(entry as any);
-              debouncedSave({ ...pet, activityLog: [ { id: Date.now(), ...entry, timestamp: new Date().toISOString() }, ...activityLog ].slice(0,10) } as PetData);
             }}
           />
         )}
@@ -316,14 +348,12 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
             stats={{ vitalidad: pet.vitalidad, energia: pet.energia, nutricion: pet.nutricion }}
             totalPoints={pet.totalPoints ?? 0}
             frutas={frutas}
-            showToast={(m, t) => setToast({ message: m, type: t, visible: true })}
-            onNavigate={(_path) => {
-              /* manejado por la app principal */
-            }}
+            showToast={(m, t) => showToast(m, t)}
+            onNavigate={(_path) => {}}
           />
         )}
 
-        {/* Floating coins - positioned at header */}
+        {/* Floating coins */}
         <div className="fixed top-6 right-4 sm:right-6 z-40 pointer-events-none">
           {floatingCoins.map(coin => (
             <div key={coin.id} className={`animate-floatUp absolute font-bold text-sm ${coin.isPositive ? 'text-hoja' : 'text-accent'}`} style={{ right: '120px', top: 0 }}>
@@ -334,42 +364,12 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
 
         {/* Toast */}
         {toast.visible && (
-          <div className={`status-toast fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-full text-sm font-bold dm-sans backdrop-blur-md shadow-xl animate-slideUp ${toast.type === 'success' ? 'bg-musgo/90 text-niebla border border-hoja/40' : toast.type === 'error' ? 'bg-accent/90 text-white' : 'bg-white/10 text-niebla border border-white/20'}`}>
+          <div className={`fixed bottom-4 left-1/2 -translate-x-1/2 z-50 px-5 py-2.5 rounded-full text-sm font-bold dm-sans backdrop-blur-md shadow-xl animate-slideUp whitespace-nowrap ${toast.type === 'success' ? 'bg-musgo/90 text-niebla border border-hoja/40' : toast.type === 'error' ? 'bg-accent/90 text-white' : 'bg-white/10 text-niebla border border-white/20'}`}>
             {toast.message}
           </div>
         )}
 
-        {/* Activity history */}
-        <div className="activity-section mt-4">
-          <button
-            onClick={() => setHistoryOpen(prev => !prev)}
-            className="w-full flex items-center justify-between px-4 py-2.5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/8 transition-all dm-sans text-sm text-niebla/70"
-          >
-            <span>📜 Historial de Actividad</span>
-            <span className={`transition-transform ${historyOpen ? 'rotate-180' : ''}`}>▾</span>
-          </button>
-
-          <div className={`overflow-hidden transition-all duration-300 ${historyOpen ? 'max-h-80 mt-2' : 'max-h-0'}`}>
-            <div className="space-y-1.5 overflow-y-auto max-h-72 pr-1">
-              {activityLog.length === 0 ? (
-                <p className="text-center text-niebla/40 dm-sans text-xs py-4">Sin actividad aún...</p>
-              ) : activityLog.map(entry => (
-                <div key={entry.id} className="flex items-center justify-between px-3 py-2 rounded-xl bg-white/5 border border-white/8">
-                  <div className="flex items-center gap-2">
-                    <span>{entry.type === 'feed' ? '🍎' : entry.type === 'chat_earn' ? '💬' : '🌿'}</span>
-                    <span className="dm-sans text-xs text-niebla/80">{entry.label}</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className={`dm-sans text-xs font-bold ${entry.coins > 0 ? 'text-hoja' : 'text-accent'}`}>{entry.coins > 0 ? '+' : ''}{entry.coins} 🍊</span>
-                    <span className="dm-sans text-xs text-niebla/40">{new Date(entry.timestamp).toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <p className="text-center font-body text-xs mt-2" style={{ color: 'rgba(245,239,230,0.15)' }}>
+        <p className="text-center font-body text-xs mt-4" style={{ color: 'rgba(245,239,230,0.15)' }}>
           RegenWasi · Ecosistema andino-amazónico digital
         </p>
       </div>
