@@ -28,28 +28,22 @@ Un ecosistema digital interactivo donde adoptas un guardián de la naturaleza (a
 - 🎨 **UI mejorada** — Floating coins, toasts, activity history
 
 ### Sesión 4 — Entrenamiento & Evolución
-- 🖼️ **Entrenamiento visual:** sube una foto de la actividad/creación de tu guardián (o dibujito) para evaluar su desempeño.
-- 🤖 **Evaluación con IA (opcional):** la imagen se envía a la función de evaluación que usa la API de OpenAI (si `VITE_OPENAI_API_KEY` está presente) para devolver una puntuación y feedback; si no hay API, se usa un fallback mock.
-- ⭐ **Puntos y recompensas:** cada entrenamiento otorga `points` y `tokens` (monedas) según la puntuación; se guarda una `trainingHistory` con miniaturas (`thumbnail`) y resultados.
-- 🌱 **Evolución por etapas:** el guardián sube de `Bebé → Joven → Adulto` según `totalPoints` y se reproducen animaciones de evolución y un modal de celebración.
-- 📊 **Efectos de entrenamiento:** ciertas categorías mejoran stats (vitalidad/energía/nutrición) según reglas configurables en `utils/trainingConfig.ts`.
-- 🖼️ **Galería y miniaturas:** se guardan thumbs comprimidos de cada envío para mostrar un historial visual en la pestaña de entrenamiento.
-- 🧭 **Navegación:** nueva pestaña `Entrenar` integrada en la navegación de `HabitatScreen` (TabNav).
-- 🎨 **Animaciones:** partículas, pop, spin y efectos orbit en la evolución para mantener la estética del Wasi.
-- 🔑 **Persistencia y migración:** los datos de entrenamiento persisten en `localStorage` usando el prefijo `regenwasi_*` y migran desde el guest cuando el usuario inicia sesión.
+- 🖼️ **Entrenamiento visual:** sube foto de tu Guardián para evaluación con IA (OpenAI/mock fallback)
+- ⭐ **Puntos y recompensas:** gana monedas según puntuación, historial visual con miniaturas
+- 🌱 **Evolución:** sube Bebé → Joven → Adulto por puntos, con animaciones y celebración
+- 📊 **Efectos:** entrenamientos mejoran stats (vitalidad/energía/nutrición)
+- 👁️ **Nueva pestaña:** Entrenar integrada en HabitatScreen
 
-### Sesión 5 — Conexión al HUB + Sistema Social Completo (FINAL)
-- 🌐 **HUB Central Público:** conexión a `https://regenmon-final.vercel.app` — todos los Guardianes viven en un mundo social compartido.
-- 📱 **Registro automático:** formulario intelligente que detecta datos del pet y crea perfil público automáticamente con sprite emoji.
-- 🏆 **Leaderboard Global:** ranking mundial filtrable por etapa (Bebé/Joven/Adulto), con paginación y posición personal.
-- 👤 **Perfil Público:** cada Guardián tiene URL `https://app.com/regenmon/[id]` visible para visitantes, mostrando stats, etapa, fecha de registro.
-- 🍎 **Interacciones Sociales:** alimentar (-10 🍊), enviar regalos (5/10/25 🍊), dejar mensajes privados (140 caracteres máx).
-- 💬 **Feed de Mensajes:** sección de chat con timestampps relativo ("hace 5 min"), sin logueo necesario para leer.
-- 🎁 **Celebraciones:** confetti emoji volador al recibir regalo/alimentación, animaciones smooth.
-- 📊 **Actividad Reciente:** notificaciones en dashboard de interacciones recibidas (feed, gift, message) con timestamps.
-- 🔄 **Sincronización Automática:** cada 5 minutos se synca pet data (stats, puntos, training history) al HUB silenciosamente.
-- 🔑 **Persistencia Multi-Usuario:** localStorage con `regenwasi_hub_id` e `regenwasi_hub_registered`, migración automática `regenhuasi_*` → `regenwasi_*` al cargar.
-- 🌍 **Responsive Full:** mobile-first layout (<640px, 640–1024px, desktop), tabs en navegación central (Wasi, Chat, Entrenar, Social).
+### Sesión 5 — Sistema Social con HUB (FINAL)
+- 🌐 **Mundo Social:** conexión a `https://regenwasi.bolt.host` — todos los Guardianes en una red pública
+- 📱 **Registro automático:** crea perfil público con sprite emoji detectado automáticamente
+- 🏆 **Leaderboard Global:** ranking mundial filtrable por etapa con paginación
+- 👤 **Perfil Público:** URL `/regenwasi/[id]` con stats, etapa, fecha de registro
+- 🍎 **Interacciones:** alimentar (-10 🍊), regalar (5/10/25 🍊), mensajes privados (140 caracteres)
+- 💬 **Mensajes:** chat con timestamps relativos, sin login necesario para leer
+- 🎁 **Celebraciones:** confetti al recibir regalo/alimentación
+- 🔄 **Auto-sync:** cada 5 minutos sincroniza data al HUB
+- 🌍 **Responsive:** 4 tabs (Wasi, Chat, Entrenar, Social) - mobile-first
 
 ---
 
