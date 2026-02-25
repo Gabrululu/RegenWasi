@@ -1,4 +1,4 @@
-# 🌿 RegenHuasi
+# 🌿 RegenWasi
 
 **Mascota virtual andina con glassmorphism oscuro, economía $FRUTA y autenticación Privy.**
 
@@ -18,7 +18,7 @@ Un ecosistema digital interactivo donde adoptas un guardián de la naturaleza (a
 - ✨ Interacciones: +5 Vitalidad, -3 Energía por mensaje
 - 🎭 Animaciones y partículas
 
-### Sesión 3 — Login + Economía (NUEVO)
+### Sesión 3 — Login + Economía 
 - 🔐 **Autenticación Privy** — Google/Email login
 - 💰 **Sistema $FRUTA** — Economía completa
   - Gana monedas por conversaciones (50-200 cap, dificultad creciente)
@@ -26,6 +26,17 @@ Un ecosistema digital interactivo donde adoptas un guardián de la naturaleza (a
   - Historial de transacciones
 - 👤 **Persistencia por usuario** — Datos sincronizados en localStorage
 - 🎨 **UI mejorada** — Floating coins, toasts, activity history
+
+### Sesión 4 — Entrenamiento & Evolución
+- 🖼️ **Entrenamiento visual:** sube una foto de la actividad/creación de tu guardián (o dibujito) para evaluar su desempeño.
+- 🤖 **Evaluación con IA (opcional):** la imagen se envía a la función de evaluación que usa la API de OpenAI (si `VITE_OPENAI_API_KEY` está presente) para devolver una puntuación y feedback; si no hay API, se usa un fallback mock.
+- ⭐ **Puntos y recompensas:** cada entrenamiento otorga `points` y `tokens` (monedas) según la puntuación; se guarda una `trainingHistory` con miniaturas (`thumbnail`) y resultados.
+- 🌱 **Evolución por etapas:** el guardián sube de `Bebé → Joven → Adulto` según `totalPoints` y se reproducen animaciones de evolución y un modal de celebración.
+- 📊 **Efectos de entrenamiento:** ciertas categorías mejoran stats (vitalidad/energía/nutrición) según reglas configurables en `utils/trainingConfig.ts`.
+- 🖼️ **Galería y miniaturas:** se guardan thumbs comprimidos de cada envío para mostrar un historial visual en la pestaña de entrenamiento.
+- 🧭 **Navegación:** nueva pestaña `Entrenar` integrada en la navegación de `HabitatScreen` (TabNav).
+- 🎨 **Animaciones:** partículas, pop, spin y efectos orbit en la evolución para mantener la estética del Wasi.
+- 🔑 **Persistencia y migración:** los datos de entrenamiento persisten en `localStorage` usando el prefijo `regenwasi_*` y migran desde el guest cuando el usuario inicia sesión.
 
 ---
 
@@ -71,7 +82,7 @@ npm run preview
 2. Elige **Explorar sin login** para jugar como invitado
 3. O **Iniciar Sesión** con Google/Email para persistencia
 4. Selecciona nombre + animal (alpaca 🦙, cóndor 🦅, rana 🐸, colibrí 🐦)
-5. Presiona "Despertar Huasi"
+5. Presiona "Despertar Wasi"
 
 ### Interactuar
 - **Abrazar** → +15 Vitalidad
@@ -134,8 +145,8 @@ src/
 1. Usuario abre app → ve LoginScreen si no autenticado
 2. Presiona "🌿 Iniciar Sesión" → Privy modal (Google/Email)
 3. Tras login:
-   - Si existe `regenhuasi_guest_data` → **migra a** `regenhuasi_${userId}_data`
-   - Carga datos del usuario desde localStorage
+  - Si existe `regenwasi_guest_data` → **migra a** `regenwasi_${userId}_data`
+  - Carga datos del usuario desde localStorage
 4. Presiona logout → vuelve a LoginScreen
 
 **Modo Guest:** Juega sin login en `__guest__` (datos NO persisten tras cerrar navegador)
@@ -222,4 +233,4 @@ MIT
 
 ---
 
-**Creado con 🌿 para el Huasi andino-amazónico digital.**
+**Creado con 🌿 para el Wasi andino-amazónico digital.**

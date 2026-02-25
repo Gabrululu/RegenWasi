@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { loadPet as loadFromStorage, savePet as saveToStorage, clearPet as clearStorage, setCurrentUserId } from '../utils/storage';
 
 export const usePersistence = (userId?: string | null) => {
-  const KEY = userId ? `regenhuasi_${userId}_data` : 'regenhuasi_guest_data';
+  const KEY = userId ? `regenwasi_${userId}_data` : 'regenwasi_guest_data';
 
   // ensure storage module knows current user
   setCurrentUserId(userId ?? null);

@@ -46,7 +46,7 @@ export default function Header({ pet }: HeaderProps) {
             </h1>
           </div>
           <p className="font-body text-xs mt-0.5" style={{ color: 'rgba(126,191,142,0.7)' }}>
-            Nv.{level} · Guardián del Huasi
+            Nivel {level} · Guardián del Wasi
           </p>
         </div>
       </div>

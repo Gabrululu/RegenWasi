@@ -3,9 +3,9 @@ import { PetData } from '../types';
 let CURRENT_USER_ID: string | null = null;
 
 function keyFor(userId?: string | null) {
-  if (userId === '__guest__') return 'regenhuasi_guest_data';
-  if (userId) return `regenhuasi_${userId}_data`;
-  return 'regenhuasi_guest_data';
+  if (userId === '__guest__') return 'regenwasi_guest_data';
+  if (userId) return `regenwasi_${userId}_data`;
+  return 'regenwasi_guest_data';
 }
 
 export function setCurrentUserId(id: string | null) {
@@ -14,10 +14,10 @@ export function setCurrentUserId(id: string | null) {
 
 export function migrateGuestToUser(userId: string) {
   try {
-    const guestKey = 'regenhuasi_guest_data';
+    const guestKey = 'regenwasi_guest_data';
     const guest = localStorage.getItem(guestKey);
     if (!guest) return;
-    const destKey = `regenhuasi_${userId}_data`;
+    const destKey = `regenwasi_${userId}_data`;
     if (!localStorage.getItem(destKey)) {
       localStorage.setItem(destKey, guest);
     }

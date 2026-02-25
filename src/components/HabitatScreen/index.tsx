@@ -11,6 +11,8 @@ import MemoryBadge from './MemoryBadge';
 import { PetData, AvatarState, Memories } from '../../types';
 import { savePet, clearPet } from '../../utils/storage';
 import { loadMemories, saveMemories, clearChat } from '../../utils/chat';
+import TabNav from './TabNav';
+import TrainingScreen from '../TrainingScreen';
 
 const DEGRADE_INTERVAL_MS = 15000;
 const SAVE_DEBOUNCE_MS = 500;
@@ -35,6 +37,7 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
   const [toast, setToast] = useState<{ message: string; type: 'info' | 'success' | 'error'; visible: boolean }>({ message: '', type: 'info', visible: false });
   const [historyOpen, setHistoryOpen] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [activeTab, setActiveTab] = useState<'wasi' | 'chat' | 'training'>('wasi');
 
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const degradeTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -148,13 +151,15 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
     setTimeout(() => setFloatingCoins(prev => prev.filter(c => c.id !== id)), 1400);
   };
 
-  const addActivityLog = (entry: { type: 'feed'|'chat_earn'|'other'; coins: number; label: string }) => {
+  const addActivityLog = (entry: { type: 'training'|'feed'|'chat_earn'|'other'; coins: number; label: string }) => {
     setActivityLog(prev => {
       const newEntry = { id: Date.now(), ...entry, timestamp: new Date().toISOString() };
       const next = [newEntry, ...prev].slice(0, 10);
       return next;
     });
   };
+
+  // (removed unused wrapper) use addActivityLog directly where needed
 
   const handlePetUpdate = useCallback(
     (updater: (prev: PetData) => PetData) => {
@@ -250,7 +255,7 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
                 border: '1px solid rgba(255,255,255,0.12)',
                 boxShadow: '0 4px 12px rgba(26,46,31,0.3)',
               }}
-              title="Reiniciar Huasi"
+              title="Reiniciar Wasi"
             >
               <RotateCcw size={16} style={{ color: 'rgba(245,239,230,0.6)' }} />
             </button>
@@ -259,28 +264,50 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
 
         <div className="nazca-divider mx-4" />
 
-        <div className="relative">
-          <Terrarium
+        <TabNav active={activeTab} onChange={(id) => setActiveTab(id as 'wasi'|'chat'|'training')} />
+
+        {activeTab === 'wasi' && (
+          <>
+            <div className="relative">
+              <Terrarium
+                pet={pet}
+                avatarState={avatarState}
+                onAnimationEnd={handleAvatarAnimEnd}
+              />
+              <InteractionParticles type={particles} onDone={handleParticlesDone} />
+            </div>
+
+            <StatsPanel pet={pet} />
+
+            <ActionButtons pet={pet} onAction={handleAction} frutas={frutas} onFeed={handleFeed} isProcessing={isProcessing} />
+          </>
+        )}
+
+        {activeTab === 'chat' && (
+          <ChatSection
             pet={pet}
-            avatarState={avatarState}
-            onAnimationEnd={handleAvatarAnimEnd}
+            memories={memories}
+            onPetUpdate={handlePetUpdate}
+            onMemoriesUpdate={handleMemoriesUpdate}
+            onEarnCoins={handleEarnCoins}
+            currentFrutas={frutas}
+            totalFrutasEarned={totalFrutasEarned}
           />
-          <InteractionParticles type={particles} onDone={handleParticlesDone} />
-        </div>
+        )}
 
-        <StatsPanel pet={pet} />
-
-        <ActionButtons pet={pet} onAction={handleAction} frutas={frutas} onFeed={handleFeed} isProcessing={isProcessing} />
-
-        <ChatSection
-          pet={pet}
-          memories={memories}
-          onPetUpdate={handlePetUpdate}
-          onMemoriesUpdate={handleMemoriesUpdate}
-          onEarnCoins={handleEarnCoins}
-          currentFrutas={frutas}
-          totalFrutasEarned={totalFrutasEarned}
-        />
+        {activeTab === 'training' && (
+          <TrainingScreen
+            pet={pet}
+            onPetUpdate={(u) => { handlePetUpdate(u); setPet(u); }}
+            onShowToast={(m, t) => setToast({ message: m, type: t, visible: true })}
+            onTriggerFloatingCoin={(amount, emoji) => triggerFloatingCoin(amount, emoji)}
+            onAddActivityLog={(entry) => {
+              // use centralized addActivityLog and persist
+              addActivityLog(entry as any);
+              debouncedSave({ ...pet, activityLog: [ { id: Date.now(), ...entry, timestamp: new Date().toISOString() }, ...activityLog ].slice(0,10) } as PetData);
+            }}
+          />
+        )}
 
         {/* Floating coins - positioned at header */}
         <div className="fixed top-6 right-4 sm:right-6 z-40 pointer-events-none">
@@ -329,7 +356,7 @@ export default function HabitatScreen({ initialPet, onReset }: HabitatScreenProp
         </div>
 
         <p className="text-center font-body text-xs mt-2" style={{ color: 'rgba(245,239,230,0.15)' }}>
-          RegenHuasi · Ecosistema andino-amazónico digital
+          RegenWasi · Ecosistema andino-amazónico digital
         </p>
       </div>
 

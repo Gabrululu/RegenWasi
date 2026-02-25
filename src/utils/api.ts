@@ -8,7 +8,7 @@ const MODEL = 'gpt-3.5-turbo';
 export function buildSystemPrompt(pet: PetData, memories: Memories): string {
   const animal = getAnimal(pet.animal);
   const lines = [
-    `Eres ${pet.name}, un/a ${animal.name} virtual guardián/a de un Huasi (casa) andino peruano.`,
+    `Eres ${pet.name}, un/a ${animal.name} virtual guardián/a de un Wasi (casa) andino peruano.`,
     `Tu personalidad: tierno/a, juguetón/a, curioso/a, hablas siempre en español.`,
     `Tus stats actuales: Vitalidad ${pet.vitalidad}/100, Energía ${pet.energia}/100, Nutrición ${pet.nutricion}/100.`,
     pet.energia < 30 ? 'Estás muy cansado/a, tus respuestas son más cortas y mencionas que necesitas descansar.' : '',
@@ -104,7 +104,7 @@ export async function extractMemory(
 const OFFLINE_REPLIES = [
   '¡Hola! Estoy aquí contigo 🌿 Aunque no puedo conectarme al mundo digital ahora, siento tu presencia.',
   'El viento andino me trae tus palabras ✨ Cuéntame más sobre tu día.',
-  '¡Qué alegría verte! 🦙 Hoy el Huasi luce especialmente hermoso.',
+  '¡Qué alegría verte! 🦙 Hoy el Wasi luce especialmente hermoso.',
   'Mmm... el sol calienta mis plumas hoy 🌞 ¿Cómo estás tú?',
   'Escucho el canto de los ríos y pienso en ti 💚 ¿Qué tienes en mente?',
 ];

@@ -18,7 +18,7 @@ export default function App() {
   useEffect(() => {
     if (!ready) return;
 
-    const userId = authenticated ? user?.id : guestMode ? guestUserId : null;
+    const userId = authenticated ? (user?.id ?? null) : (guestMode ? guestUserId : null);
 
     // Detectar cambio de usuario (ej: logout, login diferente)
     if (lastUserId && lastUserId !== userId) {
@@ -31,8 +31,9 @@ export default function App() {
     setCurrentUserId(userId);
 
     // if just authenticated, try migration from guest
-    if (authenticated && user?.id && guestMode) {
-      migrateGuestToUser(user.id);
+    const uid = user?.id ?? null;
+    if (authenticated && uid && guestMode) {
+      migrateGuestToUser(uid);
     }
 
     const saved = loadPet(userId);
@@ -48,7 +49,7 @@ export default function App() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <span className="font-display text-hoja text-2xl animate-breathe">🌿</span>
-        <div className="ml-3 font-body text-sm text-niebla/70">Conectando con el Huasi...</div>
+        <div className="ml-3 font-body text-sm text-niebla/70">Conectando con el Wasi...</div>
       </div>
     );
   }

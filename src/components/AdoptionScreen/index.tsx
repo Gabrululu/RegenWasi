@@ -65,6 +65,14 @@ export default function AdoptionScreen({ onAdopt }: AdoptionScreenProps) {
       totalFrutasSpent: 0,
       lastCoinEarnedAt: null,
       activityLog: [],
+      // entrenamiento inicial
+      totalPoints: 0,
+      stage: 1,
+      trainingHistory: [],
+      totalTrainings: 0,
+      averageScore: 0,
+      lastTrainingDate: null,
+      streakDays: 0,
     };
     savePet(pet);
     onAdopt(pet);

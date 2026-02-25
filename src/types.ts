@@ -16,6 +16,14 @@ export interface PetData {
   lastCoinEarnedAt?: string | null;
   // Historial (bonus)
   activityLog?: ActivityEntry[];
+  // Entrenamiento (sesión 4)
+  totalPoints?: number;
+  stage?: number;
+  trainingHistory?: TrainingEntry[];
+  totalTrainings?: number;
+  averageScore?: number;
+  lastTrainingDate?: string | null;
+  streakDays?: number;
 }
 
 export interface AnimalConfig {
@@ -32,6 +40,17 @@ export interface AnimalConfig {
   };
 }
 
+export interface TrainingEntry {
+  id: number;
+  score: number;
+  category: string;
+  categoryLabel: string;
+  feedback: string;
+  pointsEarned: number;
+  tokensEarned: number;
+  timestamp: string;
+  imageThumb?: string;
+}
 export type AvatarState = 'breathe' | 'bounce' | 'shake' | 'pop';
 
 export interface ChatMessage {

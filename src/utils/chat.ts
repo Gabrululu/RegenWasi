@@ -1,7 +1,7 @@
 import { ChatMessage, Memories } from '../types';
 
-const CHAT_KEY = 'regenhuasi_chat';
-const MEMORIES_KEY = 'regenhuasi_memories';
+const CHAT_KEY = 'regenwasi_chat';
+const MEMORIES_KEY = 'regenwasi_memories';
 
 export function loadMessages(): ChatMessage[] {
   try {

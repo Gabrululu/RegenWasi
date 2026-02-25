@@ -11,7 +11,7 @@ export default function LoginScreen({ onExplore }: LoginScreenProps) {
     <div className="relative min-h-screen flex flex-col items-center justify-center px-4 py-12 z-10">
       <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-screen-md">
         <h1 className="font-display" style={{ fontSize: '40px', color: 'var(--niebla)' }}>
-          🌿 RegenHuasi
+          🌿 RegenWasi
         </h1>
         <p className="font-body italic text-sm" style={{ color: 'var(--niebla)', opacity: 0.8 }}>
           Inicia sesión para guardar tu Guardián en el cosmos andino
@@ -21,7 +21,7 @@ export default function LoginScreen({ onExplore }: LoginScreenProps) {
           {!ready && (
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 rounded-full bg-hoja animate-spin" />
-              <span>Conectando con el Huasi...</span>
+              <span>Conectando con el Wasi...</span>
             </div>
           )}
 
