@@ -34,7 +34,7 @@ Un ecosistema digital interactivo donde adoptas un guardián de la naturaleza (a
 - 📊 **Efectos:** entrenamientos mejoran stats (vitalidad/energía/nutrición)
 - 👁️ **Nueva pestaña:** Entrenar integrada en HabitatScreen
 
-### Sesión 5 — Sistema Social con HUB (FINAL)
+### Sesión 5 — Sistema Social con HUB
 - 🌐 **Mundo Social:** conexión a `https://regenwasi.bolt.host` — todos los Guardianes en una red pública
 - 📱 **Registro automático:** crea perfil público con sprite emoji detectado automáticamente
 - 🏆 **Leaderboard Global:** ranking mundial filtrable por etapa con paginación
@@ -259,4 +259,4 @@ MIT
 
 ---
 
-**Creado con 🌿 para el Wasi andino-amazónico digital.**
+**Creado con 💚 para el Wasi andino-amazónico digital**
